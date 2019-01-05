@@ -1,0 +1,154 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>To run cat_mov_reg_power.m</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-07-16"><meta name="DC.source" content="to_run_power_per_Resting.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>To run cat_mov_reg_power.m</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Credit and date</a></li><li><a href="#2">Intro</a></li><li><a href="#3">Dependencies:</a></li><li><a href="#4">Basic usage</a></li><li><a href="#5">Example 1</a></li><li><a href="#6">Show PMU data if available</a></li><li><a href="#7">Show filtered data</a></li></ul></div><h2 id="1">Credit and date</h2><p>Code developed by Oscar Miranda-Dominguez.</p><p>First line of documentation: July 2018</p><h2 id="2">Intro</h2><p>This is a companion figure to cat_mov_reg_power. It shows the power spectra from each movement regressor</p><h2 id="3">Dependencies:</h2><p>Before using it, make sure you have the functions this code needs:</p><div><ul><li>power_per_Resting.m | in rushmore: /mnt/max/shared/code/internal/utilities/mov_reg_power/power_per_Resting.m</li><li>importMovReg_patch.m | in rushmore: /mnt/max/shared/projects/filtering_movement_regressors/matlab_code/importMovReg_patch.m</li><li>read_aliased_PMUextracted.m | in rushmore: /mnt/max/shared/projects/filtering_movement_regressors/matlab_code/read_aliased_PMUextracted.m</li><li>make_friston_regressors.m | in rushmore: /mnt/max/shared/utilities/HCP_Matlab/make_friston_regressors.m'</li></ul></div><h2 id="4">Basic usage</h2><p>The two mandatory input arguments for this function are:</p><div><ol><li>the path to the Movement Regressors files made by the pipelin. in this casi it is only the path to a single file (not a cell with paths to multiple Movement Regressors files as in cat_mov_reg_power</li><li>TR, BOLD's repetition time</li></ol></div><h2 id="5">Example 1</h2><pre class="codeinput"><span class="comment">% cd /mnt/max/shared/code/internal/utilities/mov_reg_power % move to the folder to save the data</span>
+f=filesep;
+TR=0.8;<span class="comment">% TR in seconds</span>
+
+ver=1;
+<span class="comment">% Path to Movement regressors file</span>
+dest_path=<span class="string">'/mnt/max/shared/code/internal/utilities/mov_reg_power/mov_reg_files/subject_with_PMU_data'</span>;
+path_mov_reg=[dest_path f <span class="string">'random_ix_1_ver'</span> num2str(ver) <span class="string">'_Movement_Regressors.txt'</span>];
+
+CLIM=power_per_Resting(path_mov_reg,TR);
+</pre><img vspace="5" hspace="5" src="to_run_power_per_Resting_01.png" alt=""> <h2 id="6">Show PMU data if available</h2><p>Make the same figure and show PMU data if available</p><pre class="codeinput">PMU_path=[dest_path f <span class="string">'random_ix_1_PMUextracted.mat'</span>];
+CLIM=power_per_Resting(path_mov_reg,TR,<span class="string">'PMU_path'</span>,PMU_path);
+</pre><img vspace="5" hspace="5" src="to_run_power_per_Resting_02.png" alt=""> <h2 id="7">Show filtered data</h2><p>Original data</p><pre class="codeinput">CLIM=power_per_Resting(path_mov_reg,TR,<span class="string">'PMU_path'</span>,PMU_path);
+ver=2;
+path_mov_reg=[dest_path f <span class="string">'random_ix_1_ver'</span> num2str(ver) <span class="string">'_Movement_Regressors.txt'</span>]
+
+<span class="comment">% Filtered data</span>
+CLIM=power_per_Resting(path_mov_reg,TR,<span class="string">'PMU_path'</span>,PMU_path,<span class="string">'clim'</span>,CLIM);
+</pre><pre class="codeoutput">
+path_mov_reg =
+
+    '/mnt/max/shared/code/internal/utilities/mov_reg_power/mov_reg_files/subject_with_PMU_data/random_ix_1_ver2_Movement_Regressors.txt'
+
+</pre><img vspace="5" hspace="5" src="to_run_power_per_Resting_03.png" alt=""> <img vspace="5" hspace="5" src="to_run_power_per_Resting_04.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% To run cat_mov_reg_power.m
+%
+%% Credit and date
+% Code developed by Oscar Miranda-Dominguez.
+%
+% First line of documentation: July 2018
+%% Intro
+%
+% This is a companion figure to cat_mov_reg_power. It shows the power
+% spectra from each movement regressor
+
+%% Dependencies:
+%
+% Before using it, make sure you have the functions this code needs:
+%
+% * power_per_Resting.m | in rushmore: /mnt/max/shared/code/internal/utilities/mov_reg_power/power_per_Resting.m
+% * importMovReg_patch.m | in rushmore: /mnt/max/shared/projects/filtering_movement_regressors/matlab_code/importMovReg_patch.m
+% * read_aliased_PMUextracted.m | in rushmore: /mnt/max/shared/projects/filtering_movement_regressors/matlab_code/read_aliased_PMUextracted.m
+% * make_friston_regressors.m | in rushmore: /mnt/max/shared/utilities/HCP_Matlab/make_friston_regressors.m'
+%
+%
+%% Basic usage
+%
+% The two mandatory input arguments for this function are:
+%
+% # the path to the Movement Regressors files made by the pipelin. in this
+% casi it is only the path to a single file (not a cell with paths to
+% multiple Movement Regressors files as in cat_mov_reg_power
+% # TR, BOLD's repetition time
+%
+%% Example 1
+%
+% 
+
+% cd /mnt/max/shared/code/internal/utilities/mov_reg_power % move to the folder to save the data
+f=filesep;
+TR=0.8;% TR in seconds
+
+ver=1;
+% Path to Movement regressors file
+dest_path='/mnt/max/shared/code/internal/utilities/mov_reg_power/mov_reg_files/subject_with_PMU_data';
+path_mov_reg=[dest_path f 'random_ix_1_ver' num2str(ver) '_Movement_Regressors.txt'];
+
+CLIM=power_per_Resting(path_mov_reg,TR);
+%% Show PMU data if available
+% Make the same figure and show PMU data if available
+
+PMU_path=[dest_path f 'random_ix_1_PMUextracted.mat'];
+CLIM=power_per_Resting(path_mov_reg,TR,'PMU_path',PMU_path);
+%% Show filtered data
+% Original data
+CLIM=power_per_Resting(path_mov_reg,TR,'PMU_path',PMU_path);
+ver=2;
+path_mov_reg=[dest_path f 'random_ix_1_ver' num2str(ver) '_Movement_Regressors.txt']
+
+% Filtered data
+CLIM=power_per_Resting(path_mov_reg,TR,'PMU_path',PMU_path,'clim',CLIM);
+
+
+##### SOURCE END #####
+--></body></html>

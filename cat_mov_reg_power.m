@@ -97,6 +97,11 @@ while q<=v
     end
     q = q+1;
 end
+
+%%
+if normalize_power_flag==0
+fig_settings.saturation=[0 100];
+end
 %% internal variables
 f=filesep;
 
@@ -197,7 +202,10 @@ if ix_subject_scan_provided_flag==0
     P=zeros(6,length(I),order+1);
 end
 
-minmax=[1 -1]*1e64;
+MOV=[mov(:,:,1);mov(:,:,2);mov(:,:,3);mov(:,:,4);mov(:,:,5);mov(:,:,6)];
+[y,x]=pmtm(MOV',8,[],1/TR);
+y=10*log10(y);
+minmax=[min(y(:)) max(y(:))];
 for i=1:6
     subplot(1,6,i)
     [y,x]=pmtm(squeeze(mov(:,:,i))',8,[],1/TR);
@@ -240,7 +248,12 @@ for i=1:6
         
     end
     %         ylims=prctile(Y(:),fig_settings.saturation);
-    imagesc(x,[],Y,ylims)
+    
+    if normalize_power_flag==0
+        imagesc(x,[],Y,minmax)
+    else
+        imagesc(x,[],Y,ylims)
+    end
     title(tit{i},'fontsize',fs_title)
     if i>1
         set(gca,'ytick',[])
@@ -274,7 +287,7 @@ for i=1:6
 end
 colormap jet
 if normalize_power_flag==0
-    barh=linspace(min(CLIM(:,1)),max(CLIM(:,1)),100);
+    barh=linspace(minmax(1),minmax(2),100);
 else
     barh=linspace(fig_settings.saturation(1),fig_settings.saturation(2),100);
 end

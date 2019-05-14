@@ -28,6 +28,8 @@ fig_settings.saturation=[.1 96];
 
 % color limits not created
 CLIM=zeros(6,2);
+runs=1;
+CLIM=zeros(runs,3,6,2,2);
 CLIM_provided_flag=0;
 
 %
@@ -36,6 +38,8 @@ ix_subject_scan_provided_flag=0;
 % preffix for naming the figures
 tit_preffix='';
 
+% show y axis
+show_y_axis=0;
 %% Read extra options, if provided
 
 v = length(varargin);
@@ -58,6 +62,10 @@ while q<=v
             
         case 'pmu_path'
             PMU_path=varargin{q+1};
+            q = q+1;
+            
+            case 'show_y_axis'
+            show_y_axis=varargin{q+1};
             q = q+1;
             
         otherwise
@@ -111,12 +119,12 @@ if length(TR)==1 %added Jan 24
     Nyqusit=repmat(Nyqusit,runs,1);
 end
 
-if nargin<6
-    CLIM=zeros(runs,3,6,2,2);
-    CLIM_provided_flag=0;
-else
-    CLIM_provided_flag=1;
-end
+% if nargin<6
+%     CLIM=zeros(runs,3,6,2,2);
+%     CLIM_provided_flag=0;
+% else
+%     CLIM_provided_flag=1;
+% end
 % Dimensions:
 % 1: Individual run
 % 2: row from each panel
@@ -276,8 +284,12 @@ for i=1:runs
             'color',my_color(j,:),...
             'linewidth',lw)
         title(tit{j},'fontsize',fs_title)
-        
+        if show_y_axis==0
         set(gca,'yticklabel',[])
+        else
+            c=gca;
+            c.YColor= my_color(j,:);
+        end
         set(gca,'xtick',time_lapse)
         xlim(time_lapse)
         set(gca,'fontsize',fs_axis);
@@ -320,7 +332,15 @@ for i=1:runs
         plot(t,mr_ld(:,j,i),...
             'color',my_color(j,:),...
             'linewidth',lw)
+        
+        title(tit{j},'fontsize',fs_title)
+        if show_y_axis==0
         set(gca,'yticklabel',[])
+        else
+            c=gca;
+            c.YColor= my_color(j,:);
+        end
+        
         try
             xlim([0 td{i}(m(i))])
         catch
@@ -358,7 +378,13 @@ for i=1:runs
         plot(x,10*log10(y),...
             'color',my_color(j,:),...
             'linewidth',lw)
+        title(tit{j},'fontsize',fs_title)
+        if show_y_axis==0
         set(gca,'yticklabel',[])
+        else
+            c=gca;
+            c.YColor= my_color(j,:);
+        end
         axis tight
 %         if CLIM_provided_flag==1
 %             ylims=CLIM(i,3,j,:,1);

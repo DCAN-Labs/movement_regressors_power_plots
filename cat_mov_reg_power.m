@@ -39,6 +39,14 @@ ix_subject_scan_provided_flag=0;
 
 % preffix for naming the figures
 tit_preffix='';
+
+% normalize_power_flag
+normalize_power_flag=1;
+
+% sort_by
+sort_by_mean_FD_flag=1;
+
+
 %% Read extra options, if provided
 
 v = length(varargin);
@@ -76,6 +84,14 @@ while q<=v
             tit_preffix=varargin{q+1};
             q = q+1;
             
+        case 'normalize_power_flag'
+            normalize_power_flag=varargin{q+1};
+            q = q+1;
+            
+        case 'sort_by_mean_fd_flag'
+            sort_by_mean_FD_flag=varargin{q+1};
+            q = q+1;
+            
         otherwise
             disp(['Unknown option ',varargin{q}])
     end
@@ -89,21 +105,21 @@ frames=zeros(n,1);
 
 mov_cell=cell(n,1);% casted as cell instead of zeros(runs*n,frames+1,6); to handle scans of different number of TRs
 fd=zeros(n,1);
-%% Read data 
+%% Read data
 
 k=0;
 for ix=1:n
     for i=1:1 %legacy for loop
         k=k+1;
-%         try
-%             fullfilepath_mov_reg=[FD(ix).Movement_Regressors_file_and_path{i}];
-%         catch
-%             fullfilepath_mov_reg=[FD(ix).Movement_Regressors_path{i} f file_mov_reg];
-%         end
+        %         try
+        %             fullfilepath_mov_reg=[FD(ix).Movement_Regressors_file_and_path{i}];
+        %         catch
+        %             fullfilepath_mov_reg=[FD(ix).Movement_Regressors_path{i} f file_mov_reg];
+        %         end
         
         fullfilepath_mov_reg=path_filename_mov_reg_file{k};
         
-%         MR = importMovReg(fullfilepath_mov_reg);
+        %         MR = importMovReg(fullfilepath_mov_reg);
         MR = importMovReg_patch(fullfilepath_mov_reg);
         MR_ld=make_friston_regressors(MR);%% Using this function to only get the linear displacements
         MR_ld=MR_ld(:,1:6);
@@ -119,7 +135,10 @@ for ix=1:n
     end
 end
 
-[B I]=sort(fd,'ascend');
+[B, I]=sort(fd,'ascend');
+if sort_by_mean_FD_flag==0
+    I=sort(I);
+end
 
 % If traces of different length are provided, it will truncate to the
 % shortest time
@@ -154,6 +173,8 @@ tit{6}='\theta_z';
 
 
 tit_figure=[tit_preffix 'cat_mov_reg_power_N_' num2str(n) '_unique_scans'];
+tit_figure=[tit_preffix 'cat_mov_reg_power_normalized_flag_' num2str(normalize_power_flag) '_N_' num2str(n) '_unique_scans'];
+tit_figure=[tit_preffix 'cat_mov_reg_power_normalized_flag_' num2str(normalize_power_flag) '_sort_by_FD_flag_' num2str(sort_by_mean_FD_flag) '_N_' num2str(n) '_unique_scans'];
 h = figure('Visible','on',...
     'Units','centimeters',...
     'PaperUnits','centimeters',...
@@ -176,7 +197,7 @@ if ix_subject_scan_provided_flag==0
     P=zeros(6,length(I),order+1);
 end
 
-
+minmax=[1 -1]*1e64;
 for i=1:6
     subplot(1,6,i)
     [y,x]=pmtm(squeeze(mov(:,:,i))',8,[],1/TR);
@@ -201,10 +222,15 @@ for i=1:6
         end
         
     end
-%     [Y, mu, sigma]=zscore(y(:,ix_subject_scan),[],1);
+    %     [Y, mu, sigma]=zscore(y(:,ix_subject_scan),[],1);
+    
+    if normalize_power_flag==0
+        Y=y;
+    end
+    
     Y=Y';
-%     MU{i}=mu;
-%     SIGMA{i}=sigma;
+    %     MU{i}=mu;
+    %     SIGMA{i}=sigma;
     %         ylims=prctile(Y(:),fig_settings.saturation);
     if CLIM_provided_flag==1
         ylims=CLIM(i,:);
@@ -226,7 +252,7 @@ for i=1:6
             set(gca,'yticklabel',num2str(B,'%4.2f'))
         else
             
-        set(gca,'yticklabel',num2str(B(get(gca,'ytick')),'%4.2f'))
+            set(gca,'yticklabel',num2str(B(get(gca,'ytick')),'%4.2f'))
         end
         ylabel('Mean FD (mm)','fontsize',fs_label,'color','k')
     end
@@ -234,16 +260,24 @@ for i=1:6
     set(gca,'fontsize',fs_axis);
     set(gca,'xticklabel',num2str(get(gca,'xtick')','%4.1f'));
     
-    if ix_subject_scan_provided_flag==1
-        set(gca,'yticklabel',[])
-        ylabel([''])
+    if or(ix_subject_scan_provided_flag==1,sort_by_mean_FD_flag==0)
+        
+%         set(gca,'yticklabel',[])
+        set(gca,'yticklabel',get(gca,'ytick'))
+        if i==1
+        ylabel(['Count'])
+        end
     end
-%     colorbar
+    
+    
     
 end
 colormap jet
-
-barh=linspace(fig_settings.saturation(1),fig_settings.saturation(2),100);
+if normalize_power_flag==0
+    barh=linspace(min(CLIM(:,1)),max(CLIM(:,1)),100);
+else
+    barh=linspace(fig_settings.saturation(1),fig_settings.saturation(2),100);
+end
 pos=get(gca,'position');
 
 
@@ -256,7 +290,13 @@ set(gca,'xtick',[])
 set(gca,'ydir','normal')
 set(gca,'YAxisLocation','right');
 set(gca,'fontsize',fig_settings.fs_axis)
-xlabel({'%',' power'})
+if normalize_power_flag==0
+    xlab={'','dB/Hz'};
+    
+else
+    xlab={'%',' power'};
+end
+xlabel(xlab)
 %%
 
 fig_name=tit_figure;

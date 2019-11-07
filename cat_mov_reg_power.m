@@ -46,7 +46,8 @@ normalize_power_flag=1;
 % sort_by
 sort_by_mean_FD_flag=1;
 
-
+% brain_radius_in_mm
+brain_radius_in_mm=50;
 %% Read extra options, if provided
 
 v = length(varargin);
@@ -92,6 +93,11 @@ while q<=v
             sort_by_mean_FD_flag=varargin{q+1};
             q = q+1;
             
+            
+        case 'brain_radius_in_mm'
+            brain_radius_in_mm=varargin{q+1};
+            q = q+1;
+            
         otherwise
             disp(['Unknown option ',varargin{q}])
     end
@@ -100,7 +106,7 @@ end
 
 %%
 if normalize_power_flag==0
-fig_settings.saturation=[0 100];
+    fig_settings.saturation=[0 100];
 end
 %% internal variables
 f=filesep;
@@ -125,14 +131,21 @@ for ix=1:n
         fullfilepath_mov_reg=path_filename_mov_reg_file{k};
         
         %         MR = importMovReg(fullfilepath_mov_reg);
-        MR = importMovReg_patch(fullfilepath_mov_reg);
+        %% adding patch to work on data with headers
+        try
+            MR = importMovReg_patch(fullfilepath_mov_reg);
+        catch
+            MR = importMovReg_patch(fullfilepath_mov_reg,2,inf);
+        end
         MR_ld=make_friston_regressors(MR);%% Using this function to only get the linear displacements
         MR_ld=MR_ld(:,1:6);
         frames(k)=size(MR,1);
         mov_cell{k}=detrend(MR_ld);
         
         
-        FD=calc_FD_HCP(fullfilepath_mov_reg);
+        %         FD=calc_FD_HCP(fullfilepath_mov_reg);% commenting this out to use
+        %         the MR that already exist
+        FD=calc_FD_HCP_MR_provided(MR,brain_radius_in_mm);
         ix_FD=1:frames(k);
         
         
@@ -275,10 +288,10 @@ for i=1:6
     
     if or(ix_subject_scan_provided_flag==1,sort_by_mean_FD_flag==0)
         
-%         set(gca,'yticklabel',[])
+        %         set(gca,'yticklabel',[])
         set(gca,'yticklabel',get(gca,'ytick'))
         if i==1
-        ylabel(['Count'])
+            ylabel(['Count'])
         end
     end
     

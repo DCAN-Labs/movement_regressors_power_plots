@@ -40,6 +40,12 @@ tit_preffix='';
 
 % show y axis
 show_y_axis=0;
+
+% brain_radius_in_mm
+brain_radius_in_mm=50;
+
+% time_lapse
+time_lapse=[120 130];
 %% Read extra options, if provided
 
 v = length(varargin);
@@ -55,7 +61,7 @@ while q<=v
             CLIM=varargin{q+1};
             CLIM_provided_flag=1;
             q = q+1;
-                        
+            
         case 'tit_preffix'
             tit_preffix=varargin{q+1};
             q = q+1;
@@ -64,8 +70,16 @@ while q<=v
             PMU_path=varargin{q+1};
             q = q+1;
             
-            case 'show_y_axis'
+        case 'show_y_axis'
             show_y_axis=varargin{q+1};
+            q = q+1;
+            
+        case 'brain_radius_in_mm'
+            brain_radius_in_mm=varargin{q+1};
+            q = q+1;
+            
+        case 'time_lapse'
+            time_lapse=varargin{q+1};
             q = q+1;
             
         otherwise
@@ -96,7 +110,7 @@ fs_axis=fig_settings.fs_axis;
 fs_legend=fig_settings.fs_legend;
 fs_label=fig_settings.fs_label;
 
-time_lapse=[120 130];
+
 
 window=10;
 noverlap=8;
@@ -173,22 +187,28 @@ mh=zeros(runs,1);
 % mr_ld=zeros(FD(ix).frames_per_run(1)+1,6,runs);
 
 for i=1:runs
-%     tit_figure{i}=[tit_preffix 'Fig02_REST' num2str(i) '_' char(FD(ix).SubjID)];
+    %     tit_figure{i}=[tit_preffix 'Fig02_REST' num2str(i) '_' char(FD(ix).SubjID)];
     tit_figure{i}=[tit_preffix 'power_per_Resting_TR_' num2str(1000*TR(i))];
     
     fullfilepath_mov_reg=path_filename_mov_reg_file;
-
+    
     
     try
         [RRa_Hz(i), HRa_Hz(i),RR_Hz(i), HR_Hz(i)]=read_aliased_PMUextracted(FD(ix).PMU_path{i},TR(i));
     end
     
     
-%     MR = importMovReg(fullfilepath_mov_reg);
-    MR = importMovReg_patch(fullfilepath_mov_reg);
+    %     MR = importMovReg(fullfilepath_mov_reg);
+    %     MR = importMovReg_patch(fullfilepath_mov_reg);
+    %% adding patch to work on data with headers
+    try
+        MR = importMovReg_patch(fullfilepath_mov_reg);
+    catch
+        MR = importMovReg_patch(fullfilepath_mov_reg,2,inf);
+    end
     MR_ld=make_friston_regressors(MR);%% Using this function to only get the linear displacements
     MR_ld=MR_ld(:,1:6);
-
+    
     mr_ld(:,:,i)=MR_ld;
     t=0:size(MR_ld,1)-1;
     t=t*TR(i);
@@ -211,8 +231,8 @@ for i=1:runs
         data2=detrend(rd{i}(1:m(i)));
         [yf, xf{i}]=pmtm(detrend(data2),5,[],1/TR(i));
         yfs{i}=smooth(yf,3);
-%         yfs{i}=yf;
-%         yfs{i}=yf; %debug
+        %         yfs{i}=yf;
+        %         yfs{i}=yf; %debug
         [foo I]=max(yfs{i});
         RRa_Hz(i)=xf{i}(I);
         
@@ -255,7 +275,7 @@ for i=1:runs
     for j=1:6
         k=k+1;
         
-%         subplot(3,6,k)
+        %         subplot(3,6,k)
         subplot(3,6,k+6)
         yyaxis left
         plot(td{i},rd{i},...
@@ -285,7 +305,7 @@ for i=1:runs
             'linewidth',lw)
         title(tit{j},'fontsize',fs_title)
         if show_y_axis==0
-        set(gca,'yticklabel',[])
+            set(gca,'yticklabel',[])
         else
             c=gca;
             c.YColor= my_color(j,:);
@@ -305,7 +325,7 @@ for i=1:runs
         
         
         
-%         subplot(3,6,k+6)
+        %         subplot(3,6,k+6)
         subplot(3,6,k)
         yyaxis left
         plot(td{i},rd{i},...
@@ -335,7 +355,7 @@ for i=1:runs
         
         title(tit{j},'fontsize',fs_title)
         if show_y_axis==0
-        set(gca,'yticklabel',[])
+            set(gca,'yticklabel',[])
         else
             c=gca;
             c.YColor= my_color(j,:);
@@ -349,20 +369,20 @@ for i=1:runs
         
         set(gca,'fontsize',fs_axis);
         if length(xticks)>4
-        try
-            set(gca,'xtick',0:120:t(m(i)))
-        catch
-            set(gca,'xtick',0:120:t(end))
-        end
+            try
+                set(gca,'xtick',0:120:t(m(i)))
+            catch
+                set(gca,'xtick',0:120:t(end))
+            end
         end
         xlabel('Time (s)','fontsize',fs_label)
-%         if CLIM_provided_flag==1
-%             ylims=CLIM(i,2,j,:,2);
-%         else
-%             ylims=ylim;
-%             CLIM(i,2,j,:,2)=ylims;
-%         end
-%         ylim(ylims)
+        %         if CLIM_provided_flag==1
+        %             ylims=CLIM(i,2,j,:,2);
+        %         else
+        %             ylims=ylim;
+        %             CLIM(i,2,j,:,2)=ylims;
+        %         end
+        %         ylim(ylims)
         
         subplot(3,6,k+12)
         yyaxis left
@@ -380,31 +400,31 @@ for i=1:runs
             'linewidth',lw)
         title(tit{j},'fontsize',fs_title)
         if show_y_axis==0
-        set(gca,'yticklabel',[])
+            set(gca,'yticklabel',[])
         else
             c=gca;
             c.YColor= my_color(j,:);
         end
         axis tight
-%         if CLIM_provided_flag==1
-%             ylims=CLIM(i,3,j,:,1);
-%         else
-%             ylims=ylim;
-%             CLIM(i,3,j,:,1)=ylims;
-%         end
-%         ylim(ylims)
+        %         if CLIM_provided_flag==1
+        %             ylims=CLIM(i,3,j,:,1);
+        %         else
+        %             ylims=ylim;
+        %             CLIM(i,3,j,:,1)=ylims;
+        %         end
+        %         ylim(ylims)
         
-%         set(gca,'xtick',0:.2:Nyqusit(i));
+        %         set(gca,'xtick',0:.2:Nyqusit(i));
         set(gca,'fontsize',fs_axis);
         xlabel('Freq. (Hz)','fontsize',fs_label,'color','k')
-%         set(gca,'xticklabel',num2str(get(gca,'xtick')','%4.1f'));
-%         if CLIM_provided_flag==1
-%             ylims=CLIM(i,3,j,:,2);
-%         else
-%             ylims=ylim;
-%             CLIM(i,3,j,:,2)=ylims;
-%         end
-%         ylim(ylims)
+        %         set(gca,'xticklabel',num2str(get(gca,'xtick')','%4.1f'));
+        %         if CLIM_provided_flag==1
+        %             ylims=CLIM(i,3,j,:,2);
+        %         else
+        %             ylims=ylim;
+        %             CLIM(i,3,j,:,2)=ylims;
+        %         end
+        %         ylim(ylims)
         
         
         %          subplot(3,6,k+18)

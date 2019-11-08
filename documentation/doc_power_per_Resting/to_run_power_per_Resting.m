@@ -8,17 +8,13 @@
 %
 % This is a companion figure to cat_mov_reg_power. It shows the power
 % spectra from each movement regressor
-
+%% Repo location
+% https://gitlab.com/Fair_lab/movement_regressors_power_plots
 %% Dependencies:
 %
-% Before using it, make sure you have the functions this code needs:
-%
-% * power_per_Resting.m | in rushmore: /mnt/max/shared/code/internal/utilities/mov_reg_power/power_per_Resting.m
-% * importMovReg_patch.m | in rushmore: /mnt/max/shared/projects/filtering_movement_regressors/matlab_code/importMovReg_patch.m
-% * read_aliased_PMUextracted.m | in rushmore: /mnt/max/shared/projects/filtering_movement_regressors/matlab_code/read_aliased_PMUextracted.m
-% * make_friston_regressors.m | in rushmore: /mnt/max/shared/utilities/HCP_Matlab/make_friston_regressors.m'
-%
-%
+% Dependancies have been included in this version. Extra functions are
+% found within this repo's folder named 'utilities'
+% 
 %% Basic usage
 %
 % The two mandatory input arguments for this function are:
@@ -38,7 +34,7 @@ TR=0.8;% TR in seconds
 
 ver=1;
 % Path to Movement regressors file
-dest_path='/mnt/max/shared/code/internal/utilities/mov_reg_power/mov_reg_files/subject_with_PMU_data';
+dest_path='P:\code\internal\utilities\OSCAR_WIP\movement_regressors_power_plots\mov_reg_files\subject_with_PMU_data';
 path_mov_reg=[dest_path f 'random_ix_1_ver' num2str(ver) '_Movement_Regressors.txt'];
 
 CLIM=power_per_Resting(path_mov_reg,TR);

@@ -17,7 +17,7 @@ function [T,RRa_Hz] = aliased_RR(RR_bpm,TR)
 % following:
 %
 % RR_bpm=12:3:25;% respiration rate (RR_bpm)in breaths per minute
-% TR=2.2; TR in seconds
+% TR=2.2;% TR in seconds
 % [T,RRa_Hz] = aliased_RR(RR_bpm,TR);
 %% Define a title
 

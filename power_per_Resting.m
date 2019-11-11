@@ -1,4 +1,4 @@
-function CLIM=power_per_Resting(path_filename_mov_reg_file,TR,varargin)
+function [CLIM peaks_at]=power_per_Resting(path_filename_mov_reg_file,TR,varargin)
 
 %% Oscar Miranda-Dominguez
 
@@ -46,6 +46,9 @@ brain_radius_in_mm=50;
 
 % time_lapse
 time_lapse=[120 130];
+
+% show_line_peak_power
+show_line_peak_power=0;
 %% Read extra options, if provided
 
 v = length(varargin);
@@ -80,6 +83,10 @@ while q<=v
             
         case 'time_lapse'
             time_lapse=varargin{q+1};
+            q = q+1;
+            
+        case 'show_line_peak_power'
+            show_line_peak_power=varargin{q+1};
             q = q+1;
             
         otherwise
@@ -120,7 +127,8 @@ fs=1./TR;
 fig_wide=20;
 fig_tall=10;
 
-
+%%
+peaks_at=zeros(6,1);
 %%
 
 Nyqusit=(1./TR)/2;
@@ -417,6 +425,15 @@ for i=1:runs
         %         set(gca,'xtick',0:.2:Nyqusit(i));
         set(gca,'fontsize',fs_axis);
         xlabel('Freq. (Hz)','fontsize',fs_label,'color','k')
+        
+        Y=detrend(smoothdata(10*log10(y),'movmedian',5));
+        
+        [peak_at]=find_peaks(x,Y);
+        peaks_at(j)=peak_at;
+        if show_line_peak_power==1
+            line([1 1]*peak_at,ylim,'color','k');
+        end
+        
         %         set(gca,'xticklabel',num2str(get(gca,'xtick')','%4.1f'));
         %         if CLIM_provided_flag==1
         %             ylims=CLIM(i,3,j,:,2);

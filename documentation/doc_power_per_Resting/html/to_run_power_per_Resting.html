@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>To run cat_mov_reg_power.m</title><meta name="generator" content="MATLAB 9.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-11"><meta name="DC.source" content="to_run_power_per_Resting.m"><style type="text/css">
+      --><title>To run power_per_Resting.m</title><meta name="generator" content="MATLAB 9.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-14"><meta name="DC.source" content="to_run_power_per_Resting.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>To run cat_mov_reg_power.m</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Credit and date</a></li><li><a href="#2">Intro</a></li><li><a href="#3">Repo location</a></li><li><a href="#4">Dependencies:</a></li><li><a href="#5">Basic usage</a></li><li><a href="#6">Example 1</a></li><li><a href="#7">Show PMU data if available</a></li><li><a href="#8">Show filtered data</a></li></ul></div><h2 id="1">Credit and date</h2><p>Code developed by Oscar Miranda-Dominguez.</p><p>First line of documentation: July 2018</p><h2 id="2">Intro</h2><p>This is a companion figure to cat_mov_reg_power. It shows the power spectra from each movement regressor</p><h2 id="3">Repo location</h2><p>https://gitlab.com/Fair_lab/movement_regressors_power_plots</p><h2 id="4">Dependencies:</h2><p>Dependancies have been included in this version. Extra functions are found within this repo's folder named 'utilities'</p><h2 id="5">Basic usage</h2><p>The two mandatory input arguments for this function are:</p><div><ol><li>the path to the Movement Regressors files made by the pipelin. in this casi it is only the path to a single file (not a cell with paths to multiple Movement Regressors files as in cat_mov_reg_power</li><li>TR, BOLD's repetition time</li></ol></div><h2 id="6">Example 1</h2><pre class="codeinput"><span class="comment">% cd /mnt/max/shared/code/internal/utilities/mov_reg_power % move to the folder to save the data</span>
+  </style></head><body><div class="content"><h1>To run power_per_Resting.m</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Credit and date</a></li><li><a href="#2">Intro</a></li><li><a href="#3">Repo location</a></li><li><a href="#4">Dependencies:</a></li><li><a href="#5">Basic usage</a></li><li><a href="#6">Example 1</a></li><li><a href="#7">Show PMU data if available</a></li><li><a href="#8">Show filtered data</a></li></ul></div><h2 id="1">Credit and date</h2><p>Code developed by Oscar Miranda-Dominguez.</p><p>First line of documentation: July 2018</p><h2 id="2">Intro</h2><p>This is a companion figure to cat_mov_reg_power. It shows the power spectra from each movement regressor</p><h2 id="3">Repo location</h2><p>https://gitlab.com/Fair_lab/movement_regressors_power_plots</p><h2 id="4">Dependencies:</h2><p>Dependancies have been included in this version. Extra functions are found within this repo's folder named 'utilities'</p><h2 id="5">Basic usage</h2><p>The two mandatory input arguments for this function are:</p><div><ol><li>the path to the Movement Regressors files made by the pipelin. in this casi it is only the path to a single file (not a cell with paths to multiple Movement Regressors files as in cat_mov_reg_power</li><li>TR, BOLD's repetition time</li></ol></div><h2 id="6">Example 1</h2><pre class="codeinput"><span class="comment">% cd /mnt/max/shared/code/internal/utilities/mov_reg_power % move to the folder to save the data</span>
 f=filesep;
 TR=0.8;<span class="comment">% TR in seconds</span>
 
@@ -91,7 +91,7 @@ path_mov_reg =
 
 </pre><img vspace="5" hspace="5" src="to_run_power_per_Resting_03.png" alt=""> <img vspace="5" hspace="5" src="to_run_power_per_Resting_04.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%% To run cat_mov_reg_power.m
+%% To run power_per_Resting.m
 %
 %% Credit and date
 % Code developed by Oscar Miranda-Dominguez.

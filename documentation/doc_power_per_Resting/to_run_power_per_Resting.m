@@ -1,4 +1,4 @@
-%% To run cat_mov_reg_power.m
+%% To run power_per_Resting.m
 %
 %% Credit and date
 % Code developed by Oscar Miranda-Dominguez.

@@ -7,7 +7,7 @@
 % frequency band from multiple subjects.
 %
 %% Repo location
-% https://gitlab.com/Fair_lab/movement_regressors_power_plots
+% https://github.com/DCAN-Labs/movement_regressors_power_plots
 %% Dependencies:
 %
 % Dependancies have been included in this version. Extra functions are

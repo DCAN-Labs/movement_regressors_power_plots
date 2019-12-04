@@ -8,7 +8,7 @@
 %
 % This function identifies the peak in the spectrum
 %% Repo location
-% https://gitlab.com/Fair_lab/movement_regressors_power_plots
+% https://github.com/DCAN-Labs/movement_regressors_power_plots
 
 %% Basic usage
 % The two mandatory input arguments for this function are:

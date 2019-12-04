@@ -10,7 +10,7 @@
 % This function displays the aliased frequency in Hz of a signal in events
 % per minute (RR_bpm). YOu also need to provide the TR in seconds
 %% Repo location
-% https://gitlab.com/Fair_lab/movement_regressors_power_plots
+% https://github.com/DCAN-Labs/movement_regressors_power_plots
 %% Dependencies:
 %
 % NO extra dependencies needed

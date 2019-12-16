@@ -47,7 +47,7 @@ normalize_power_flag=1;
 sort_by_mean_FD_flag=1;
 
 % brain_radius_in_mm
-brain_radius_in_mm=50;
+brain_radius_in_mm=45;
 %% Read extra options, if provided
 
 v = length(varargin);
@@ -284,8 +284,9 @@ for i=1:6
     end
     xlabel('Freq. (Hz)','fontsize',fs_label,'color','k')
     set(gca,'fontsize',fs_axis);
-    set(gca,'xticklabel',num2str(get(gca,'xtick')','%4.1f'));
-    
+%     set(gca,'xticklabel',num2str(get(gca,'xtick')','%4.1f'));
+    set(gca,'xticklabel',num2str(get(gca,'xtick')'));
+    xtickangle(20)
     if or(ix_subject_scan_provided_flag==1,sort_by_mean_FD_flag==0)
         
         %         set(gca,'yticklabel',[])
